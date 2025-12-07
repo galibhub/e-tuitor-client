@@ -13,13 +13,23 @@ import {
 } from "react-icons/fa";
 
 // Custom Hooks
+
+
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { useForm } from "react-hook-form";
 
 const TuitionDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const {
+  register,
+  handleSubmit,
+  reset,
+  formState: { errors },
+} = useForm();
+
   const [openModal, setOpenModal] = useState(false);
 
   // 1️⃣ Fetch single tuition by id
@@ -37,42 +47,46 @@ const TuitionDetails = () => {
   };
 
   // 2️⃣ Handle application submit
-  const handleApply = async (e) => {
-    e.preventDefault();
-    const form = e.target;
+  const handleApply = async (data) => {
+  const application = {
+    tuitionId: tuition._id,
+    tuitionTitle: tuition.title,
+    studentEmail: tuition.studentEmail,
+    studentName: tuition.studentName,
 
-    const application = {
-      tuitionId: tuition._id,
-      tuitionTitle: tuition.title,
-      studentEmail: tuition.studentEmail,
-      studentName: tuition.studentName,
-      tutorName: user?.displayName,
-      tutorEmail: user?.email,
-      qualifications: form.qualifications.value,
-      experience: form.experience.value,
-      expectedSalary: form.expectedSalary.value,
-      status: "pending",
-    };
+    // From react-hook-form (read-only inputs also in data)
+    tutorName: data.tutorName || user?.displayName,
+    tutorEmail: data.tutorEmail || user?.email,
+    qualifications: data.qualifications,
+    experience: data.experience,
+    expectedSalary: data.expectedSalary,
 
-    try {
-      const res = await axiosSecure.post("/applications", application);
-      if (res.data.insertedId) {
-        Swal.fire({
-          icon: "success",
-          title: "Application Submitted!",
-          text: "The student will review your application.",
-        });
-        setOpenModal(false);
-      }
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: "error",
-        title: "Failed!",
-        text: "Could not submit application. Try again.",
-      });
-    }
+    status: "pending",
   };
+
+  try {
+    const res = await axiosSecure.post("/applications", application);
+
+    if (res.data.insertedId) {
+      Swal.fire({
+        icon: "success",
+        title: "Application Submitted!",
+        text: "The student will review your application.",
+      });
+
+      reset();          // clear form
+      setOpenModal(false);
+    }
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Failed!",
+      text: "Could not submit application. Try again.",
+    });
+  }
+};
+
 
   if (isLoading || !tuition) {
     return (
@@ -216,95 +230,146 @@ const TuitionDetails = () => {
         </div>
 
         {/* --- 4. Application Modal (FIXED ALIGNMENT) --- */}
-        {openModal && (
-          <dialog className="modal modal-open modal-bottom sm:modal-middle bg-black/60 backdrop-blur-sm z-50">
-            <div className="modal-box w-11/12 max-w-2xl p-0 overflow-hidden rounded-2xl shadow-2xl">
-              {/* Modal Header */}
-              <div className="bg-primary text-primary-content p-6">
-                 <h3 className="font-bold text-2xl flex items-center gap-2">
-                    <FaUserGraduate /> Apply for Tuition
-                 </h3>
-                 <p className="text-sm opacity-90 mt-1">Applying for: <span className="font-semibold underline">{tuition.title}</span></p>
-              </div>
+ {openModal && (
+  <dialog className="modal modal-open modal-bottom sm:modal-middle bg-black/60 backdrop-blur-sm z-50">
+    <div className="modal-box w-11/12 max-w-2xl p-0 overflow-hidden rounded-2xl shadow-2xl">
 
-              {/* Modal Body */}
-              <form onSubmit={handleApply} className="p-6 md:p-8 bg-base-100">
-                
-                {/* 1. Name & Email Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text text-xs font-bold uppercase text-base-content/50">Applicant Name</span>
-                        </label>
-                        <input type="text" value={user?.displayName || ""} readOnly className="input input-bordered w-full bg-base-200/50 cursor-not-allowed" />
-                    </div>
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text text-xs font-bold uppercase text-base-content/50">Applicant Email</span>
-                        </label>
-                        <input type="email" value={user?.email || ""} readOnly className="input input-bordered w-full bg-base-200/50 cursor-not-allowed" />
-                    </div>
-                </div>
+      {/* Modal Header */}
+      <div className="bg-primary text-primary-content p-6">
+        <h3 className="font-bold text-2xl flex items-center gap-2">
+          <FaUserGraduate /> Apply for Tuition
+        </h3>
+        <p className="text-sm opacity-90 mt-1">
+          Applying for: <span className="font-semibold underline">{tuition.title}</span>
+        </p>
+      </div>
 
-                {/* 2. Qualifications */}
-                <div className="form-control w-full mb-5">
-                  <label className="label">
-                    <span className="label-text font-bold text-base">Your Qualifications</span>
-                  </label>
-                  <textarea 
-                    name="qualifications" 
-                    required 
-                    className="textarea textarea-bordered h-24 focus:textarea-primary w-full text-base" 
-                    placeholder="E.g. BSc in Math from DU, 3 years tutoring experience..."
-                  ></textarea>
-                </div>
+      {/* Modal Body */}
+    <form onSubmit={handleSubmit(handleApply)} className="p-6 md:p-8 bg-base-100">
 
-                {/* 3. Experience */}
-                <div className="form-control w-full mb-5">
-                  <label className="label">
-                    <span className="label-text font-bold text-base">Relevant Experience</span>
-                  </label>
-                  <textarea 
-                    name="experience" 
-                    required 
-                    className="textarea textarea-bordered h-24 focus:textarea-primary w-full text-base" 
-                    placeholder="Briefly describe your experience teaching this specific subject or class level."
-                  ></textarea>
-                </div>
 
-                {/* 4. Expected Salary */}
-                <div className="form-control w-full mb-8">
-                  <label className="label">
-                    <span className="label-text font-bold text-base">Expected Monthly Salary</span>
-                  </label>
-                  <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/50 font-bold">৳</span>
-                      <input 
-                        type="number" 
-                        name="expectedSalary" 
-                        required 
-                        className="input input-bordered w-full pl-10 focus:input-primary font-medium" 
-                        placeholder="e.g. 5000" 
-                      />
-                  </div>
-                  <label className="label">
-                     <span className="label-text-alt text-base-content/60">The student's budget is {formatCurrency(tuition.salary)}</span>
-                  </label>
-                </div>
+        {/* 1. Name & Email Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
 
-                {/* Modal Actions */}
-                <div className="modal-action flex justify-end gap-3 mt-6">
-                  <button type="button" onClick={() => setOpenModal(false)} className="btn btn-ghost hover:bg-base-200">Cancel</button>
-                  <button type="submit" className="btn btn-primary px-8">Submit Application</button>
-                </div>
-              </form>
-            </div>
-            
-            <form method="dialog" className="modal-backdrop">
-                <button onClick={() => setOpenModal(false)}>close</button>
-            </form>
-          </dialog>
-        )}
+          {/* Name */}
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text text-xs font-bold uppercase text-base-content/50">Your Name</span>
+            </label>
+            <input
+              type="text"
+            //   defaultValue={user?.displayName || ""}
+            //   readOnly
+              {...register("tutorName")}
+              className="input input-bordered w-full bg-base-200/50 cursor-not-allowed"
+            />
+          </div>
+
+          {/* Email */}
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text text-xs font-bold uppercase text-base-content/50">Your Email</span>
+            </label>
+            <input
+              type="email"
+              defaultValue={user?.email || ""}
+              readOnly
+              {...register("tutorEmail")}
+              className="input input-bordered w-full bg-base-200/50 cursor-not-allowed"
+            />
+          </div>
+
+        </div>
+
+        {/* Qualifications */}
+        <div className="form-control w-full mb-4">
+          <label className="label">
+            <span className="label-text font-bold text-base">Your Qualifications</span>
+          </label>
+          <textarea
+            {...register("qualifications", {
+              required: "Qualifications are required",
+              minLength: { value: 10, message: "Please write at least 10 characters" }
+            })}
+            className={`textarea textarea-bordered h-24 w-full text-base ${
+              errors.qualifications ? "textarea-error" : "focus:textarea-primary"
+            }`}
+            placeholder="E.g. BSc in Math from DU, 3 years tutoring experience..."
+          ></textarea>
+
+          {errors.qualifications && (
+            <p className="text-error text-sm mt-1">{errors.qualifications.message}</p>
+          )}
+        </div>
+
+        {/* Experience */}
+        <div className="form-control w-full mb-4">
+          <label className="label">
+            <span className="label-text font-bold text-base">Relevant Experience</span>
+          </label>
+          <textarea
+            {...register("experience", {
+              required: "Experience is required",
+              minLength: { value: 5, message: "Please write at least 5 characters" }
+            })}
+            className={`textarea textarea-bordered h-24 w-full text-base ${
+              errors.experience ? "textarea-error" : "focus:textarea-primary"
+            }`}
+            placeholder="Briefly describe your experience teaching this specific subject."
+          ></textarea>
+
+          {errors.experience && (
+            <p className="text-error text-sm mt-1">{errors.experience.message}</p>
+          )}
+        </div>
+
+        {/* Expected Salary */}
+        <div className="form-control w-full mb-6">
+          <label className="label">
+            <span className="label-text font-bold text-base">Expected Monthly Salary</span>
+          </label>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/50 font-bold">৳</span>
+
+            <input
+              type="number"
+              {...register("expectedSalary", {
+                required: "Expected salary is required",
+                min: { value: 1, message: "Salary must be greater than 0" }
+              })}
+              className={`input input-bordered w-full pl-10 font-medium ${
+                errors.expectedSalary ? "input-error" : "focus:input-primary"
+              }`}
+              placeholder="e.g. 5000"
+            />
+          </div>
+
+          {errors.expectedSalary && (
+            <p className="text-error text-sm mt-1">{errors.expectedSalary.message}</p>
+          )}
+
+          <label className="label">
+            <span className="label-text-alt text-base-content/60">
+              Student's budget: {tuition.salary} BDT
+            </span>
+          </label>
+        </div>
+
+        {/* Modal Actions */}
+        <div className="modal-action flex justify-end gap-3 mt-4">
+          <button type="button" onClick={() => setOpenModal(false)} className="btn btn-ghost hover:bg-base-200">Cancel</button>
+          <button type="submit" className="btn btn-primary px-8">Submit Application</button>
+        </div>
+      </form>
+    </div>
+
+    <form method="dialog" className="modal-backdrop">
+      <button onClick={() => setOpenModal(false)}>close</button>
+    </form>
+  </dialog>
+)}
+
+
       </div>
     </div>
   );

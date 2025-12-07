@@ -4,26 +4,61 @@ import { FaBookReader } from "react-icons/fa";
 import { useForm } from "react-hook-form"; // 1. Import hook
 import useAuth from "../../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
+  const axiosSecure=useAxiosSecure()
  
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const {registerUser}=useAuth();
+  const {registerUser,user}=useAuth();
 
  
-  const handleRegistration = (data) => {
-    console.log("Form Data:", data);
-    registerUser(data.email,data.password)
-    .then(result=>{
-      console.log(result.user)
-    })
-    .catch(error=>{
-      console.log(error)
-    })
+  const handleRegistration = async (data) => {
+  console.log("Form Data:", data);
+  
+  try {
+    // 1. Firebase এ user create করুন
+    const result = await registerUser(data.email, data.password);
+    console.log(result.user);
 
+    // 2. Database এ user data save করুন
+    const newUser = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      role: data.role,
+      photoURL: result.user.photoURL || "",
+      uid: result.user.uid,
+      createdAt: new Date().toISOString(),
+    };
+
+    const res = await axiosSecure.post("/users", newUser);
+    console.log("User saved:", res.data);
+
+    if (res.data.insertedId) {
+      Swal.fire({
+        title: "Registration Successful!",
+        text: "Your account has been created successfully.",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
+      
+      
+      // window.location.href = "/dashboard";
+    }
+
+  } catch (error) {
+    console.error("Registration error:", error);
     
-  };
-
+    Swal.fire({
+      title: "Error!",
+      text: error.message || "Failed to create account. Please try again.",
+      icon: "error",
+      confirmButtonText: "OK"
+    });
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-md p-8 bg-base-100 shadow-xl rounded-lg border border-base-300">

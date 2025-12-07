@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import PlatformWorks from "./PlatFormWorks";
 import WhyChoose from "./WhyChoose";
+import Hero from "./Hero";
 
 const Home = () => {
   const axiosSecure = useAxiosSecure();
@@ -42,21 +43,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Find Your Perfect <span className="text-primary">Tutor</span>
-          </h1>
-          <p className="text-lg md:text-xl text-base-content/70 mb-8">
-            Connect with qualified tutors for personalized learning
-          </p>
-          <Link to="/tuitions" className="btn btn-primary btn-lg">
-            Browse All Tuitions
-          </Link>
-        </div>
-      </section>
-
+        <Hero></Hero>
+  
       {/* Latest Tuitions */}
       <section className="container mx-auto px-4 py-16">
         <div className="flex justify-between items-center mb-8">

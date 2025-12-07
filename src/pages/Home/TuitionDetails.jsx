@@ -86,7 +86,7 @@ const TuitionDetails = () => {
     <div className="min-h-screen bg-base-200 py-10 px-4">
       <div className="max-w-6xl mx-auto">
         
-        {/* --- 1. Top Header Card (Title & CTA) --- */}
+        {/* --- 1. Top Header Card --- */}
         <div className="bg-base-100 rounded-2xl shadow-lg border border-base-200 p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -102,7 +102,6 @@ const TuitionDetails = () => {
             </p>
           </div>
 
-          {/* Action Button */}
           <div className="w-full md:w-auto">
              {user ? (
                 <button
@@ -121,13 +120,11 @@ const TuitionDetails = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-            
             {/* --- 2. Left Column: Main Details --- */}
             <div className="lg:col-span-2 space-y-8">
-                
                 {/* Highlights Grid */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                    {/* Salary Card */}
+                    {/* Salary */}
                     <div className="bg-base-100 p-5 rounded-2xl border border-base-200 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="p-4 bg-green-100 text-green-600 rounded-full text-xl">
                             <FaMoneyBillWave />
@@ -137,8 +134,7 @@ const TuitionDetails = () => {
                             <p className="text-lg font-bold text-base-content">{formatCurrency(tuition.salary)}</p>
                         </div>
                     </div>
-
-                    {/* Days/Week Card */}
+                    {/* Schedule */}
                     <div className="bg-base-100 p-5 rounded-2xl border border-base-200 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="p-4 bg-blue-100 text-blue-600 rounded-full text-xl">
                             <FaClock />
@@ -148,8 +144,7 @@ const TuitionDetails = () => {
                             <p className="text-lg font-bold text-base-content">{tuition.daysPerWeek} Days / Week</p>
                         </div>
                     </div>
-
-                    {/* Medium Card */}
+                    {/* Medium */}
                     <div className="bg-base-100 p-5 rounded-2xl border border-base-200 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="p-4 bg-purple-100 text-purple-600 rounded-full text-xl">
                             <FaBookOpen />
@@ -159,8 +154,7 @@ const TuitionDetails = () => {
                             <p className="text-lg font-bold text-base-content capitalize">{tuition.medium}</p>
                         </div>
                     </div>
-
-                    {/* Type Card */}
+                    {/* Type */}
                     <div className="bg-base-100 p-5 rounded-2xl border border-base-200 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div className="p-4 bg-orange-100 text-orange-600 rounded-full text-xl">
                             <FaChalkboardTeacher />
@@ -215,13 +209,13 @@ const TuitionDetails = () => {
                   
                   <div className="divider text-xs text-base-content/40 uppercase">Safety Tips</div>
                   <p className="text-xs text-base-content/60 text-center leading-5">
-                     Always arrange a demo class before final commitment. Do not pay in advance without verification.
+                     Always arrange a demo class before final commitment.
                   </p>
                </div>
             </div>
         </div>
 
-        {/* --- 4. Application Modal --- */}
+        {/* --- 4. Application Modal (FIXED ALIGNMENT) --- */}
         {openModal && (
           <dialog className="modal modal-open modal-bottom sm:modal-middle bg-black/60 backdrop-blur-sm z-50">
             <div className="modal-box w-11/12 max-w-2xl p-0 overflow-hidden rounded-2xl shadow-2xl">
@@ -234,35 +228,64 @@ const TuitionDetails = () => {
               </div>
 
               {/* Modal Body */}
-              <form onSubmit={handleApply} className="p-6 md:p-8 bg-base-100 space-y-5">
+              <form onSubmit={handleApply} className="p-6 md:p-8 bg-base-100">
                 
-                {/* User Info Readonly Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="form-control">
-                        <label className="label text-xs font-bold uppercase text-base-content/50">Applicant Name</label>
+                {/* 1. Name & Email Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+                    <div className="form-control w-full">
+                        <label className="label">
+                            <span className="label-text text-xs font-bold uppercase text-base-content/50">Applicant Name</span>
+                        </label>
                         <input type="text" value={user?.displayName || ""} readOnly className="input input-bordered w-full bg-base-200/50 cursor-not-allowed" />
                     </div>
-                    <div className="form-control">
-                        <label className="label text-xs font-bold uppercase text-base-content/50">Applicant Email</label>
+                    <div className="form-control w-full">
+                        <label className="label">
+                            <span className="label-text text-xs font-bold uppercase text-base-content/50">Applicant Email</span>
+                        </label>
                         <input type="email" value={user?.email || ""} readOnly className="input input-bordered w-full bg-base-200/50 cursor-not-allowed" />
                     </div>
                 </div>
 
-                <div className="form-control">
-                  <label className="label font-bold">Your Qualifications</label>
-                  <textarea name="qualifications" required className="textarea textarea-bordered h-24 focus:textarea-primary" placeholder="E.g. BSc in Math from DU, 3 years tutoring experience..."></textarea>
+                {/* 2. Qualifications */}
+                <div className="form-control w-full mb-5">
+                  <label className="label">
+                    <span className="label-text font-bold text-base">Your Qualifications</span>
+                  </label>
+                  <textarea 
+                    name="qualifications" 
+                    required 
+                    className="textarea textarea-bordered h-24 focus:textarea-primary w-full text-base" 
+                    placeholder="E.g. BSc in Math from DU, 3 years tutoring experience..."
+                  ></textarea>
                 </div>
 
-                <div className="form-control">
-                  <label className="label font-bold">Relevant Experience</label>
-                  <textarea name="experience" required className="textarea textarea-bordered h-24 focus:textarea-primary" placeholder="Briefly describe your experience teaching this specific subject or class level."></textarea>
+                {/* 3. Experience */}
+                <div className="form-control w-full mb-5">
+                  <label className="label">
+                    <span className="label-text font-bold text-base">Relevant Experience</span>
+                  </label>
+                  <textarea 
+                    name="experience" 
+                    required 
+                    className="textarea textarea-bordered h-24 focus:textarea-primary w-full text-base" 
+                    placeholder="Briefly describe your experience teaching this specific subject or class level."
+                  ></textarea>
                 </div>
 
-                <div className="form-control">
-                  <label className="label font-bold">Expected Monthly Salary (৳)</label>
+                {/* 4. Expected Salary */}
+                <div className="form-control w-full mb-8">
+                  <label className="label">
+                    <span className="label-text font-bold text-base">Expected Monthly Salary</span>
+                  </label>
                   <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/50">৳</span>
-                      <input type="number" name="expectedSalary" required className="input input-bordered w-full pl-8 focus:input-primary" placeholder="e.g. 5000" />
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/50 font-bold">৳</span>
+                      <input 
+                        type="number" 
+                        name="expectedSalary" 
+                        required 
+                        className="input input-bordered w-full pl-10 focus:input-primary font-medium" 
+                        placeholder="e.g. 5000" 
+                      />
                   </div>
                   <label className="label">
                      <span className="label-text-alt text-base-content/60">The student's budget is {formatCurrency(tuition.salary)}</span>
@@ -270,14 +293,13 @@ const TuitionDetails = () => {
                 </div>
 
                 {/* Modal Actions */}
-                <div className="modal-action pt-4 border-t border-base-200">
+                <div className="modal-action flex justify-end gap-3 mt-6">
                   <button type="button" onClick={() => setOpenModal(false)} className="btn btn-ghost hover:bg-base-200">Cancel</button>
                   <button type="submit" className="btn btn-primary px-8">Submit Application</button>
                 </div>
               </form>
             </div>
             
-            {/* Click outside to close (optional) */}
             <form method="dialog" className="modal-backdrop">
                 <button onClick={() => setOpenModal(false)}>close</button>
             </form>

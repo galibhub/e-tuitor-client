@@ -43,8 +43,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-        <Hero></Hero>
-  
+      <Hero></Hero>
+
       {/* Latest Tuitions */}
       <section className="container mx-auto px-4 py-16">
         <div className="flex justify-between items-center mb-8">
@@ -149,34 +149,77 @@ const Home = () => {
             No tutors registered yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
             {latestTutors.map((tutor) => (
               <div
                 key={tutor._id}
-                className="card bg-base-100 shadow-lg hover:shadow-2xl transition-shadow border border-base-300"
+                className="rounded-2xl overflow-hidden shadow-xl bg-base-100 border border-base-300 
+                 hover:shadow-2xl hover:border-primary/60 transition-all duration-300 group"
               >
-                <div className="card-body">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="avatar">
-                      <div className="w-12 h-12 rounded-full">
-                        <img
-                          src={
-                            tutor.photoURL || "https://via.placeholder.com/48"
-                          }
-                          alt={tutor.name}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">{tutor.name}</h3>
-                      <p className="text-xs text-base-content/60">
-                        {tutor.email}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-base-content/70">
-                    Registered tutor on eTuitionBd
+                {/* Image Section */}
+                <div className="relative h-64 w-full overflow-hidden bg-base-200 flex items-center justify-center">
+                  <img
+                    src={
+                      tutor.photoURL && tutor.photoURL !== ""
+                        ? tutor.photoURL
+                        : "https://i.ibb.co/WchFhLg/user.png"
+                    }
+                    alt={tutor.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 p-5"
+                  />
+
+                  {/* Top-right role badge */}
+                  <span className="absolute top-3 right-3 badge badge-primary text-xs shadow-md">
+                    Tutor
+                  </span>
+                </div>
+                {/* Text Content */}
+                <div className="p-5 space-y-3">
+                  {/* Name */}
+                  <h3
+                    className="text-xl font-bold text-base-content tracking-wide 
+                       group-hover:text-primary transition-colors duration-300"
+                  >
+                    {tutor.name}
+                  </h3>
+
+                  {/* Email */}
+                  <p className="text-sm text-base-content/60 flex items-center gap-2 truncate">
+                    ✉️ {tutor.email}
                   </p>
+
+                  {/* Phone */}
+                  <p className="text-sm text-base-content/60 flex items-center gap-2">
+                    📞 {tutor.phone || "Not provided"}
+                  </p>
+
+                  {/* Join Date */}
+                  <p className="text-sm text-base-content/60 flex items-center gap-2">
+                    📅 Joined:{" "}
+                    {tutor.createdAt
+                      ? new Date(tutor.createdAt).toLocaleDateString()
+                      : "N/A"}
+                  </p>
+
+                  {/* Status */}
+                  <div className="flex items-center justify-between pt-3 border-t border-base-300 text-sm">
+                    <span className="font-semibold capitalize">
+                      Status:
+                      <span
+                        className={`ml-1 ${
+                          tutor.status === "active"
+                            ? "text-success"
+                            : "text-base-content/50"
+                        }`}
+                      >
+                        {tutor.status}
+                      </span>
+                    </span>
+
+                    <span className="text-xs italic text-base-content/50">
+                      ID: {tutor.uid?.slice(0, 6)}...
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}

@@ -59,8 +59,8 @@ const Tutions = () => {
                   {tuition.location}
                 </p>
                 <p className="flex items-center gap-2">
-                  <FaMoneyBillWave className="text-success" />
-                  ৳{tuition.salary}/month
+                  <FaMoneyBillWave className="text-success" />৳{tuition.salary}
+                  /month
                 </p>
                 <p className="flex items-center gap-2">
                   <FaCalendarAlt className="text-secondary" />
@@ -73,8 +73,7 @@ const Tutions = () => {
                   <div className="w-8 h-8 rounded-full">
                     <img
                       src={
-                        tuition.studentPhoto ||
-                        "https://via.placeholder.com/40"
+                        tuition.studentPhoto || "https://via.placeholder.com/40"
                       }
                       alt={tuition.studentName}
                     />

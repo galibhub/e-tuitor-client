@@ -9,7 +9,7 @@ import {
   FaBookReader,
 } from "react-icons/fa";
 
-const Tutions = () => {
+const AllTutions = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch ALL approved tuitions (NO SORTING)
@@ -110,4 +110,4 @@ const Tutions = () => {
   );
 };
 
-export default Tutions;
+export default AllTutions;

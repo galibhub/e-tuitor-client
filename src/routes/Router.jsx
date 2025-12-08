@@ -1,26 +1,28 @@
 import { createBrowserRouter } from "react-router";
 import RootLayouts from "../layouts/RootLayouts";
 import Home from "../pages/Home/Home";
-import Tutions from "../pages/NavbarPages/Tutions";
-import Tutors from "../pages/NavbarPages/Tutors";
 import About from "../pages/NavbarPages/About";
 import Contact from "../pages/NavbarPages/Contact";
+import Tutions from "../pages/NavbarPages/Tutions";
+import Tutors from "../pages/NavbarPages/Tutors";
 
 import AuthLayout from "../layouts/AuthLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+import TuitionManagement from "../pages/Admin/TuitionManagement";
+import UserManagement from "../pages/Admin/UserManagement";
 import Login from "../pages/AuthLayout/Login";
 import Register from "../pages/AuthLayout/Register";
-import PrivetRoute from "./PrivateRoute";
-import DashboardLayout from "../layouts/DashboardLayout";
-import MyTution from "../pages/Student/MyTution";
-import PostTution from "../pages/Student/PostTution";
+import TuitionDetails from "../pages/Home/TuitionDetails";
 import AppliedTuitor from "../pages/Student/AppliedTuitor";
+import MyTution from "../pages/Student/MyTution";
 import Payment from "../pages/Student/Payment";
+import PaymentCancel from "../pages/Student/PaymentCancel";
+import PaymentSuccess from "../pages/Student/PaymentSuccess";
+import PostTution from "../pages/Student/PostTution";
 import MyApplication from "../pages/Tuitor/MyApplication";
 import OnGoingTution from "../pages/Tuitor/OnGoingTution";
 import RevenueHistory from "../pages/Tuitor/RevenueHistory";
-import UserManagement from "../pages/Admin/UserManagement";
-import TuitionManagement from "../pages/Admin/TuitionManagement";
-import TuitionDetails from "../pages/Home/TuitionDetails";
+import PrivetRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +52,15 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         Component: Contact,
+      },
+      // Payment success/cancel routes (outside dashboard)
+      {
+        path: "payment/success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "payment/cancel",
+        element: <PaymentCancel />,
       },
     ],
   },
@@ -88,7 +99,7 @@ export const router = createBrowserRouter([
         element: <AppliedTuitor></AppliedTuitor>,
       },
       {
-        path: "/dashboard/payments",
+        path: "/dashboard/payments/:id",
         element: <Payment></Payment>,
       },
       {

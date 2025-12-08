@@ -3,13 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const AppliedTuitor = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  
-  const { data: applications = [], isLoading, refetch } = useQuery({
+  const {
+    data: applications = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["applications", user?.email],
     enabled: !!user?.email, // only when email ready
     queryFn: async () => {
@@ -19,7 +23,6 @@ const AppliedTuitor = () => {
       return res.data;
     },
   });
-
 
   const handleUpdateStatus = async (applicationId, newStatus) => {
     try {
@@ -61,9 +64,7 @@ const AppliedTuitor = () => {
     <div className="bg-base-100 rounded-2xl shadow-lg border border-base-200 p-4 md:p-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
         <div>
-          <h2 className="text-2xl font-bold">
-            Applied Tutors
-          </h2>
+          <h2 className="text-2xl font-bold">Applied Tutors</h2>
           <p className="text-sm text-base-content/60">
             Tutors who applied to your tuition posts.
           </p>
@@ -160,19 +161,19 @@ const AppliedTuitor = () => {
                   {/* Actions */}
                   <td>
                     <div className="flex flex-col lg:flex-row gap-2 justify-center">
-                      <button
-                        onClick={() =>
-                          handleUpdateStatus(app._id, "approved")
-                        }
-                        className="btn btn-xs btn-success"
-                        disabled={app.status === "approved"}
+                      {/* Accept -> Payment page */}
+                      <Link
+                        to={`/dashboard/payments/${app._id}`}
+                        className={`btn btn-xs btn-success ${
+                          app.status === "approved" ? "btn-disabled" : ""
+                        }`}
                       >
                         Accept
-                      </button>
+                      </Link>
+
+                      {/* Reject -> still uses handleUpdateStatus */}
                       <button
-                        onClick={() =>
-                          handleUpdateStatus(app._id, "rejected")
-                        }
+                        onClick={() => handleUpdateStatus(app._id, "rejected")}
                         className="btn btn-xs btn-error"
                         disabled={app.status === "rejected"}
                       >

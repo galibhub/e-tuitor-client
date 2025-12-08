@@ -43,7 +43,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-md border-b border-base-300 px-4 sticky top-0 z-50">
+    <div className="navbar bg-base-100  shadow-md border-b border-base-300 px-4  sticky top-0 z-50">
       {/* LEFT SECTION */}
       <div className="navbar-start">
         {/* Mobile Menu */}

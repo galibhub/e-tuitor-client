@@ -7,14 +7,14 @@ const MyTution = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  // 1) Load all approved tuitions for this student (paid + approved applications)
+  
   const {
     data: approvedTuitions = [],
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["myApprovedTuitions", user?.email],
-    enabled: !!user?.email, // email ready holei call hobe
+    enabled: !!user?.email, 
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/applications?studentEmail=${user.email}&status=approved`
@@ -23,7 +23,7 @@ const MyTution = () => {
     },
   });
 
-  // 2) Total amount paid
+  
   const totalPaid = approvedTuitions.reduce(
     (sum, app) => sum + Number(app.paidAmount || app.expectedSalary || 0),
     0

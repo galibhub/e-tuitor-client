@@ -355,7 +355,7 @@ const DashboardLayout = () => {
 
                 <li>
                   <NavLink
-                    to="/dashboard/admin/reports"
+                    to="/dashboard/reportAnalysis"
                     className={({ isActive }) =>
                       isActive
                         ? "bg-gradient-to-r from-accent to-primary text-white font-semibold"

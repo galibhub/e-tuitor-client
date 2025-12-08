@@ -7,14 +7,14 @@ const MyPayments = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  // 1) Load all payments made by this student
+ 
   const {
     data: payments = [],
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["myPayments", user?.email],
-    enabled: !!user?.email, // email ready holei call hobe
+    enabled: !!user?.email, 
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/payments/student?email=${user.email}`
@@ -23,7 +23,7 @@ const MyPayments = () => {
     },
   });
 
-  // 2) Total paid amount
+  
   const totalPaid = payments.reduce(
     (sum, p) => sum + Number(p.amount || 0),
     0

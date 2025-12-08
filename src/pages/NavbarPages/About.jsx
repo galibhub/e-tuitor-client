@@ -188,12 +188,12 @@ const About = () => {
                 Join thousands of students and tutors who are already transforming their educational experience with eTuitionBd.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <button className="btn btn-secondary btn-lg border-none shadow-lg hover:scale-105 transition-transform">
+                <Link to='/register' className="btn btn-secondary btn-lg border-none shadow-lg hover:scale-105 transition-transform">
                   Register as Student
-                </button>
-                <button className="btn bg-white text-primary btn-lg border-none shadow-lg hover:scale-105 transition-transform hover:bg-gray-100">
+                </Link>
+                <Link to='/login' className="btn bg-white text-primary btn-lg border-none shadow-lg hover:scale-105 transition-transform hover:bg-gray-100">
                   Register as Tutor
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>

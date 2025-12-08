@@ -24,19 +24,19 @@ const Navbar = () => {
 
   const navLinks = (
     <>
-      <li>
+      <li className="font-semibold">
         <NavLink to="/">Home</NavLink>
       </li>
-      <li>
+      <li className="font-semibold">
         <NavLink to="/tuitions">Tuitions</NavLink>
       </li>
-      <li>
+      <li className="font-semibold">
         <NavLink to="/tutors">Tutors</NavLink>
       </li>
-      <li>
+      <li className="font-semibold">
         <NavLink to="/about">About</NavLink>
       </li>
-      <li>
+      <li className="font-semibold">
         <NavLink to="/contact">Contact</NavLink>
       </li>
     </>
@@ -179,9 +179,7 @@ const Navbar = () => {
             <Link to="/login" className="btn btn-primary">
               Login
             </Link>
-            {/* <Link to="/register" className="btn btn-primary btn-sm">
-              Register
-            </Link> */}
+           
           </>
         )}
       </div>

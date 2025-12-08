@@ -10,7 +10,7 @@ import {
   FiFile,
 } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
-import useUserRole from "../hooks/useUserRole.JSX";
+import useUserRole from "../hooks/useUserRole.jsx";
 
 
 
@@ -197,7 +197,7 @@ const DashboardLayout = () => {
           {/* Sidebar Menu */}
           <ul className="menu w-full grow p-3 gap-1 text-sm font-medium">
             {/* 🎓 Student Section (Student + Admin) */}
-            {(isStudent || isAdmin) && (
+            {isStudent && (
               <>
                 <li className="menu-title">
                   <span className="text-primary font-bold tracking-wide">
@@ -264,7 +264,7 @@ const DashboardLayout = () => {
             )}
 
             {/* 🧑‍🏫 Tutor Section (Tutor + Admin) */}
-            {(isTutor || isAdmin) && (
+            {isTutor  && (
               <>
                 <li className="menu-title mt-3">
                   <span className="text-secondary font-bold tracking-wide">

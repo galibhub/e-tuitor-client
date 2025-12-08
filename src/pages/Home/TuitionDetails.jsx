@@ -57,6 +57,7 @@ const TuitionDetails = () => {
     // From react-hook-form (read-only inputs also in data)
     tutorName: data.tutorName || user?.displayName,
     tutorEmail: data.tutorEmail || user?.email,
+    tutorPhoto: user?.photoURL || "",
     qualifications: data.qualifications,
     experience: data.experience,
     expectedSalary: data.expectedSalary,

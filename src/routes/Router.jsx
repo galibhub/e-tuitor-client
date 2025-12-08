@@ -23,6 +23,7 @@ import MyApplication from "../pages/Tuitor/MyApplication";
 import OnGoingTution from "../pages/Tuitor/OnGoingTution";
 import RevenueHistory from "../pages/Tuitor/RevenueHistory";
 import PrivetRoute from "./PrivateRoute";
+import MyPayments from "../pages/Student/MyPayments";
 
 export const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
         path: "/dashboard/applied-tutors",
         element: <AppliedTuitor></AppliedTuitor>,
       },
+       {
+      path: "/dashboard/payments",
+      element: <MyPayments></MyPayments>,
+    },
       {
         path: "/dashboard/payments/:id",
         element: <Payment></Payment>,

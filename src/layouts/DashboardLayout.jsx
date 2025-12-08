@@ -1,6 +1,12 @@
 import React from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
-import { FaBookReader, FaUser, FaSignOutAlt, FaCog, FaChartPie } from "react-icons/fa";
+import {
+  FaBookReader,
+  FaUser,
+  FaSignOutAlt,
+  FaCog,
+  FaChartPie,
+} from "react-icons/fa";
 import {
   FiBookOpen,
   FiPlusCircle,
@@ -8,13 +14,10 @@ import {
   FiTrendingUp,
   FiDollarSign,
   FiFile,
+  FiEdit,
 } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
 import useUserRole from "../hooks/useUserRole.jsx";
-
-
-
-
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
@@ -132,7 +135,10 @@ const DashboardLayout = () => {
 
                   {/* Navigation Links */}
                   <li>
-                    <Link to="/" className="py-3 font-medium text-base-content/80">
+                    <Link
+                      to="/"
+                      className="py-3 font-medium text-base-content/80"
+                    >
                       <FaChartPie className="text-lg" />
                       Home
                     </Link>
@@ -235,6 +241,21 @@ const DashboardLayout = () => {
 
                 <li>
                   <NavLink
+                    to="/dashboard/manage-tuition"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-gradient-to-r from-primary to-secondary text-white font-semibold"
+                        : "hover:bg-primary/10"
+                    }
+                  >
+                    <FiEdit className="text-lg" />{" "}
+                    {/* ✅ Changed from FiFile */}
+                    Manage Post
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
                     to="/dashboard/applied-tutors"
                     className={({ isActive }) =>
                       isActive
@@ -264,7 +285,7 @@ const DashboardLayout = () => {
             )}
 
             {/* 🧑‍🏫 Tutor Section (Tutor + Admin) */}
-            {isTutor  && (
+            {isTutor && (
               <>
                 <li className="menu-title mt-3">
                   <span className="text-secondary font-bold tracking-wide">

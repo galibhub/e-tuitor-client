@@ -51,7 +51,7 @@ const PostTuition = () => {
         icon: "success",
       });
 
-      // reset();
+      reset();
     }
 
   } catch (error) {

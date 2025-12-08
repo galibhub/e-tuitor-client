@@ -29,6 +29,7 @@ import StudentRoute from "./StudentRoute";
 import TutorRoute from "./TutorRoute";
 import AdminRoute from "./AdminRoute";
 import ProfileSetting from "../layouts/ProfileSetting";
+import ManagePost from "../pages/Student/ManagePost";
 
 export const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/payments/:id",
         element: <StudentRoute><Payment></Payment></StudentRoute>,
+      },
+      {
+        path:'/dashboard/manage-tuition',
+        element:<StudentRoute><ManagePost></ManagePost></StudentRoute>
       },
       {
         path: "/dashboard/my-applications",

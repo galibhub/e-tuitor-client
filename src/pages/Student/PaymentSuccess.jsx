@@ -14,21 +14,37 @@ const PaymentSuccess = () => {
   useEffect(() => {
     if (!sessionId) return;
 
-    setLoading(true);
-    setError("");
+    // Prevent multiple calls
+    let isCancelled = false;
 
-    axiosSecure
-      .patch(`/payment-success?session_id=${sessionId}`)
-      .then((res) => {
-        setPaymentInfo(res.data); // { message, transactionId, trackingId, amount }
-        setLoading(false);
-      })
-      .catch((error) => {
+    const verifyPayment = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const res = await axiosSecure.patch(`/payment-success?session_id=${sessionId}`);
+        
+        if (!isCancelled) {
+          setPaymentInfo(res.data);
+          setLoading(false);
+        }
+      } catch (error) {
         console.error("Payment update error:", error);
-        setError("Could not verify payment. Please contact support if money was deducted.");
-        setLoading(false);
-      });
-  }, [sessionId, axiosSecure]);
+        
+        if (!isCancelled) {
+          setError("Could not verify payment. Please contact support if money was deducted.");
+          setLoading(false);
+        }
+      }
+    };
+
+    verifyPayment();
+
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isCancelled = true;
+    };
+  }, [sessionId, axiosSecure]); // Added axiosSecure to dependencies
 
 
   if (!sessionId) {
@@ -46,7 +62,6 @@ const PaymentSuccess = () => {
     );
   }
 
-  // ⏳ Loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-200">
@@ -59,7 +74,6 @@ const PaymentSuccess = () => {
       </div>
     );
   }
-
 
   if (error) {
     return (
@@ -76,7 +90,6 @@ const PaymentSuccess = () => {
       </div>
     );
   }
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">

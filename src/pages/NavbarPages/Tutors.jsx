@@ -33,26 +33,17 @@ const Tutors = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-12 relative z-10">
         
-        {/* --- Header Section --- */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl font-bold mb-2">
-              Find Your <span className="text-primary">Perfect Tutor</span>
-            </h1>
-            <p className="text-base-content/60 max-w-md">
-              Browse our community of verified expert tutors tailored to your learning goals.
-            </p>
-          </div>
-
-          {/* Search/Filter Placeholder */}
-          <div className="join shadow-sm">
-            <div className="bg-base-100 flex items-center px-4 rounded-l-lg border border-base-300">
-               <FaSearch className="text-base-content/40" />
-            </div>
-            <input className="input input-bordered join-item border-l-0 pl-0 focus:outline-none w-full md:w-64" placeholder="Search by name or subject..." />
-            <button className="btn btn-primary join-item">Search</button>
-          </div>
-        </div>
+       {/* --- Header Section --- */}
+<div className="flex flex-col items-center text-center mb-12 gap-6">
+  <div>
+    <h1 className="text-4xl font-bold mb-2">
+      Find Your <span className="text-primary">Perfect Tutor</span>
+    </h1>
+    <p className="text-base-content/60 max-w-md mx-auto">
+      Browse our community of verified expert tutors tailored to your learning goals.
+    </p>
+  </div>
+</div>
 
         {/* --- Content Grid --- */}
         {tutors.length === 0 ? (
@@ -140,12 +131,6 @@ const Tutors = () => {
                   </div>
                 </div>
 
-                {/* 4. Footer / Action */}
-                <div className="px-6 pb-6">
-                  <button className="btn btn-primary btn-outline w-full rounded-lg hover:scale-[1.02] active:scale-95 transition-transform">
-                    View Full Profile
-                  </button>
-                </div>
               </div>
             ))}
           </div>

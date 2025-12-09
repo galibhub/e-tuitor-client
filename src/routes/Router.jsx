@@ -30,6 +30,7 @@ import TutorRoute from "./TutorRoute";
 import AdminRoute from "./AdminRoute";
 import ProfileSetting from "../layouts/ProfileSetting";
 import ManagePost from "../pages/Student/ManagePost";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +47,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "tuitions/:id",
-        Component: TuitionDetails,
+        element: (
+          <PrivetRoute>
+            <TuitionDetails />
+          </PrivetRoute>
+        ),
       },
       {
         path: "tutors",
@@ -68,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "payment/cancel",
         element: <PaymentCancel />,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
       },
     ],
   },
@@ -95,56 +104,108 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard/my-tuitions",
-        element: <StudentRoute><MyTution></MyTution></StudentRoute>,
+        element: (
+          <StudentRoute>
+            <MyTution></MyTution>
+          </StudentRoute>
+        ),
       },
       {
         path: "/dashboard/post-tuition",
-        element: <StudentRoute><PostTution></PostTution></StudentRoute>,
+        element: (
+          <StudentRoute>
+            <PostTution></PostTution>
+          </StudentRoute>
+        ),
       },
       {
         path: "/dashboard/applied-tutors",
-        element: <StudentRoute><AppliedTuitor></AppliedTuitor></StudentRoute>,
+        element: (
+          <StudentRoute>
+            <AppliedTuitor></AppliedTuitor>
+          </StudentRoute>
+        ),
       },
-       {
-      path: "/dashboard/payments",
-      element: <StudentRoute><MyPayments></MyPayments></StudentRoute>,
-    },
+      {
+        path: "/dashboard/payments",
+        element: (
+          <StudentRoute>
+            <MyPayments></MyPayments>
+          </StudentRoute>
+        ),
+      },
       {
         path: "/dashboard/payments/:id",
-        element: <StudentRoute><Payment></Payment></StudentRoute>,
+        element: (
+          <StudentRoute>
+            <Payment></Payment>
+          </StudentRoute>
+        ),
       },
       {
-        path:'/dashboard/manage-tuition',
-        element:<StudentRoute><ManagePost></ManagePost></StudentRoute>
+        path: "/dashboard/manage-tuition",
+        element: (
+          <StudentRoute>
+            <ManagePost></ManagePost>
+          </StudentRoute>
+        ),
       },
       {
         path: "/dashboard/my-applications",
-        element: <TutorRoute><MyApplication></MyApplication></TutorRoute>,
+        element: (
+          <TutorRoute>
+            <MyApplication></MyApplication>
+          </TutorRoute>
+        ),
       },
       {
         path: "/dashboard/ongoing-tuitions",
-        element: <TutorRoute><OnGoingTution></OnGoingTution></TutorRoute>,
+        element: (
+          <TutorRoute>
+            <OnGoingTution></OnGoingTution>
+          </TutorRoute>
+        ),
       },
       {
         path: "/dashboard/revenue-history",
-        element: <TutorRoute><RevenueHistory></RevenueHistory></TutorRoute>,
+        element: (
+          <TutorRoute>
+            <RevenueHistory></RevenueHistory>
+          </TutorRoute>
+        ),
       },
       {
         path: "/dashboard/userManagement",
-        element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
       },
       {
         path: "/dashboard/reportAnalysis",
-        element: <AdminRoute><ReportAnalysis></ReportAnalysis></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <ReportAnalysis></ReportAnalysis>
+          </AdminRoute>
+        ),
       },
       {
         path: "/dashboard/tuitionManagement",
-        element: <AdminRoute><TuitionManagement></TuitionManagement></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <TuitionManagement></TuitionManagement>
+          </AdminRoute>
+        ),
       },
       {
-        path:"/dashboard/profile",
-        element:<ProfileSetting></ProfileSetting>
-      }
+        path: "/dashboard/profile",
+        element: <ProfileSetting></ProfileSetting>,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
     ],
   },
 ]);

@@ -1,30 +1,49 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaBookReader } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const { signInUser } = useAuth(); // change to signInUser / logInUser if needed
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { signInUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = (data) => {
     console.log("Login Data:", data);
     signInUser(data.email, data.password)
       .then((result) => {
         console.log("Logged in user:", result.user);
-        // later: navigate('/dashboard') based on role
+
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back, ${result.user.displayName || "User"}!`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate("/");
       })
       .catch((error) => {
         console.log("Login error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Something went wrong. Please try again.",
+        });
       });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-md p-8 bg-base-100 shadow-xl rounded-lg border border-base-300">
-        
         {/* Logo + Title */}
         <div className="text-center mb-6">
           <div className="flex justify-center mb-2">
@@ -38,7 +57,6 @@ const Login = () => {
 
         {/* Login Form */}
         <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
-
           {/* Email */}
           <div className="form-control w-full">
             <label className="label">
@@ -92,11 +110,9 @@ const Login = () => {
               Register
             </Link>
           </p>
-          
         </div>
-         
 
-         <SocialLogin></SocialLogin>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );

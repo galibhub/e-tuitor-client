@@ -4,15 +4,22 @@ import Footer from '../pages/Shared/Footer/Footer';
 import Navbar from '../pages/Shared/Navbar/Navbar';
 
 const RootLayouts = () => {
-    return (
-        <div className='max-w-7xl mx-auto'>
-            <Navbar ></Navbar>
-            <div className='min-h-screen'>
-                <Outlet></Outlet>
-            </div>
-            <Footer></Footer>
+  return (
+    <div className="min-h-screen flex flex-col bg-base-100">
+      {/* Full-width sticky navbar */}
+      <Navbar />
+
+      {/* Main content area – center + max-width */}
+      <main className="flex-1 w-full">
+        <div className="max-w-7xl mx-auto px-4">
+          <Outlet />
         </div>
-    );
+      </main>
+
+      {/* Full-width footer */}
+      <Footer />
+    </div>
+  );
 };
 
 export default RootLayouts;

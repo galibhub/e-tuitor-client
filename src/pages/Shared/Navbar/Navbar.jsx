@@ -150,7 +150,7 @@ const Navbar = () => {
 
                 <li>
                   <Link
-                    to="/profile"
+                    to="/dashboard/profile"
                     className="py-3 font-medium text-base-content/80"
                   >
                     <FaCog className="text-lg" />
@@ -178,6 +178,9 @@ const Navbar = () => {
             {/* Show Login & Register when user is NOT logged in */}
             <Link to="/login" className="btn btn-primary">
               Login
+            </Link>
+            <Link to="/register" className="btn btn-Secondary">
+              Register
             </Link>
            
           </>

@@ -1,17 +1,36 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 
 const SocialLogin = () => {
 
     const {signInGoogle}=useAuth();
+    const navigate=useNavigate()
 
 const handleGoogleSignIn = () => {
   signInGoogle()
   .then(result=>{
     console.log(result.user)
+    
+    Swal.fire({
+      icon: "success",
+      title: "Login Successful!",
+      text: `Welcome back, ${result.user.displayName || "User"}!`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
+    navigate('/')
   })
   .catch(error => {
     console.log(error)
+    Swal.fire({
+      icon: "error",
+      title: "Login Failed",
+      text: "Something went wrong. Please try again.",
+    });
   })
 }
 

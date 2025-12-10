@@ -548,7 +548,6 @@ This project is licensed under the MIT License.
 
 **Galib**
 - GitHub: [@galibhub](https://github.com/galibhub)
-- Portfolio: [GitHub Profile](https://github.com/galibhub)
 - Project: [e-tuitor-client](https://github.com/galibhub/e-tuitor-client)
 
 ---

@@ -520,8 +520,7 @@ Make sure `public/_redirects` file exists with:
 ```bash
 npm run dev       # Start development server (localhost:5173)
 npm run build     # Create production build
-npm run preview   # Preview production build locally
-npm run lint      # Check code for errors
+
 ```
 
 ---

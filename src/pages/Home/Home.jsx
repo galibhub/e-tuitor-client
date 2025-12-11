@@ -65,67 +65,69 @@ const Home = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tuitions.map((tuition) => (
-              <div
-                key={tuition._id}
-                className="card bg-base-100 shadow-lg hover:shadow-2xl transition-shadow border border-base-300"
-              >
-                <div className="card-body">
-                  <h3 className="card-title text-xl mb-2">{tuition.title}</h3>
+  {tuitions.map((tuition) => (
+    <div
+      key={tuition._id}
+      className="card bg-base-100 shadow-lg hover:shadow-2xl transition-shadow border border-base-300 overflow-hidden"
+    >
+      <div className="card-body">
+        <h3 className="card-title text-xl mb-2 line-clamp-2">
+          {tuition.title}
+        </h3>
 
-                  <div className="flex gap-2 mb-3">
-                    <span className="badge badge-primary">
-                      {tuition.subject}
-                    </span>
-                    <span className="badge badge-secondary">
-                      {tuition.classLevel}
-                    </span>
-                  </div>
+        <div className="flex gap-2 mb-3 flex-wrap">
+          <span className="badge badge-primary text-xs">
+            {tuition.subject}
+          </span>
+          <span className="badge badge-secondary text-xs">
+            {tuition.classLevel}
+          </span>
+        </div>
 
-                  <div className="space-y-2 text-sm">
-                    <p className="flex items-center gap-2">
-                      <FaMapMarkerAlt className="text-primary" />
-                      {tuition.location}
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <FaMoneyBillWave className="text-success" />৳
-                      {tuition.salary}/month
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <FaCalendarAlt className="text-secondary" />
-                      {tuition.daysPerWeek} days/week
-                    </p>
-                  </div>
+        <div className="space-y-2 text-sm">
+          <p className="flex items-center gap-2 line-clamp-1">
+            <FaMapMarkerAlt className="text-primary flex-shrink-0" />
+            <span className="truncate">{tuition.location}</span>
+          </p>
+          <p className="flex items-center gap-2">
+            <FaMoneyBillWave className="text-success flex-shrink-0" />
+            ৳{tuition.salary}/month
+          </p>
+          <p className="flex items-center gap-2">
+            <FaCalendarAlt className="text-secondary flex-shrink-0" />
+            {tuition.daysPerWeek} days/week
+          </p>
+        </div>
 
-                  <div className="flex items-center gap-2 mt-4 pt-4 border-t border-base-300">
-                    <div className="avatar">
-                      <div className="w-8 h-8 rounded-full">
-                        <img
-                          src={
-                            tuition.studentPhoto ||
-                            "https://via.placeholder.com/40"
-                          }
-                          alt={tuition.studentName}
-                        />
-                      </div>
-                    </div>
-                    <span className="text-sm text-base-content/70">
-                      {tuition.studentName}
-                    </span>
-                  </div>
-
-                  <div className="card-actions mt-4">
-                    <Link
-                      to={`/tuitions/${tuition._id}`}
-                      className="btn btn-primary btn-sm w-full"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-base-300">
+          <div className="avatar">
+            <div className="w-8 h-8 rounded-full">
+              <img
+                src={tuition.studentPhoto || "https://i.ibb.co/WchFhLg/user.png"}
+                alt={tuition.studentName}
+                onError={(e) => {
+                  e.target.src = "https://i.ibb.co/WchFhLg/user.png";
+                }}
+              />
+            </div>
           </div>
+          <span className="text-sm text-base-content/70 truncate">
+            {tuition.studentName}
+          </span>
+        </div>
+
+        <div className="card-actions mt-4">
+          <Link
+            to={`/tuitions/${tuition._id}`}
+            className="btn btn-primary btn-sm w-full"
+          >
+            View Details
+          </Link>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
         )}
       </section>
 

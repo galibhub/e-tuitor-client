@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import authImg from '../assets/authImage.png'
 import Navbar from '../pages/Shared/Navbar/Navbar';
+import Footer from '../pages/Shared/Footer/Footer';
 
 const AuthLayout = () => {
     return (
@@ -15,6 +16,7 @@ const AuthLayout = () => {
                     <img src={authImg} alt="" />
                 </div>
             </div>
+             <Footer />
         </div>
     );
 };

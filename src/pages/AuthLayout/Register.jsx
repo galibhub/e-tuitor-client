@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaBookReader } from "react-icons/fa";
 import { useForm } from "react-hook-form"; // 1. Import hook
 import useAuth from "../../hooks/useAuth";
@@ -10,69 +10,77 @@ import axios from "axios";
 
 const Register = () => {
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { registerUser, user } = useAuth();
+  const { registerUser, user,updateUserProfile } = useAuth();
 
- const handleRegistration = async (data) => {
-  console.log("Form Data:", data);
+  const handleRegistration = async (data) => {
+    console.log("Form Data:", data);
 
-  try {
-    const profileImg = data.photo[0];
+    try {
+      const profileImg = data.photo[0];
 
-    
-    const formData = new FormData(); 
-    formData.append("image", profileImg);
-    
-    const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgage_host_key}`;
-    const imgResponse = await axios.post(image_API_URL, formData); // Added await
-    
-    const photoURL = imgResponse.data.data.display_url; 
-    console.log("Uploaded photo URL:", photoURL);
+      const formData = new FormData();
+      formData.append("image", profileImg);
 
-    
-    const result = await registerUser(data.email, data.password);
-    console.log(result.user);
+      const image_API_URL = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_imgage_host_key
+      }`;
+      const imgResponse = await axios.post(image_API_URL, formData); // Added await
 
-    
-    const newUser = {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      role: data.role,
-      photoURL: photoURL, 
-      uid: result.user.uid,
-      createdAt: new Date().toISOString(),
-    };
+      const photoURL = imgResponse.data.data.display_url;
+      console.log("Uploaded photo URL:", photoURL);
 
-    const res = await axiosSecure.post("/users", newUser);
-    console.log("User saved:", res.data);
+      const result = await registerUser(data.email, data.password);
+ 
+ 
+      await updateUserProfile(data.name, photoURL);
 
-    if (res.data.insertedId) {
+console.log(result.user);
+
+
+
+      
+
+      const newUser = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        role: data.role,
+        photoURL: photoURL,
+        uid: result.user.uid,
+        createdAt: new Date().toISOString(),
+      };
+
+      const res = await axiosSecure.post("/users", newUser);
+      console.log("User saved:", res.data);
+
+      if (res.data.insertedId) {
+        Swal.fire({
+          title: "Registration Successful!",
+          text: "Your account has been created successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        navigate("/");
+        // window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+
       Swal.fire({
-        title: "Registration Successful!",
-        text: "Your account has been created successfully.",
-        icon: "success",
+        title: "Error!",
+        text: error.message || "Failed to create account. Please try again.",
+        icon: "error",
         confirmButtonText: "OK",
       });
-
-      // window.location.href = "/dashboard";
     }
-  } catch (error) {
-    console.error("Registration error:", error);
-
-    Swal.fire({
-      title: "Error!",
-      text: error.message || "Failed to create account. Please try again.",
-      icon: "error",
-      confirmButtonText: "OK",
-    });
-  }
-};
+  };
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-md p-8 bg-base-100 shadow-xl rounded-lg border border-base-300">

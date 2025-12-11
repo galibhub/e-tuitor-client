@@ -38,17 +38,19 @@ const TuitionDetails = () => {
     },
   });
 
-  // 2️⃣ Fetch logged-in user's ROLE from backend
-  const { data: roleData, isLoading: isRoleLoading } = useQuery({
-    queryKey: ["userRole", user?.email],
-    enabled: !!user?.email, // only call if user logged-in
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/role/${user.email}`);
-      return res.data; // { role: 'student' | 'tutor' | 'admin' }
-    },
-  });
+  // 2️⃣ Fetch logged-in user's data from backend
+const { data: userData, isLoading: isUserLoading } = useQuery({
+  queryKey: ["userData", user?.email],
+  enabled: !!user?.email,
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/users/${user.email}`);
+    return res.data;
+  },
+});
 
-  const userRole = roleData?.role; // may be 'student'|'tutor'|'admin'
+const userRole = userData?.role;
+const userName = userData?.name || user?.displayName || "";
+
 
   // Helper function to format currency
   const formatCurrency = (amount) => {
@@ -160,7 +162,7 @@ const TuitionDetails = () => {
               </div>
             )}
 
-            {user && isRoleLoading && (
+            {user && isUserLoading && (
               <div className="flex items-center gap-2">
                 <span className="loading loading-spinner loading-sm text-primary"></span>
                 <span className="text-sm text-base-content/60">
@@ -169,14 +171,14 @@ const TuitionDetails = () => {
               </div>
             )}
 
-            {user && !isRoleLoading && userRole !== "tutor" && (
+            {user && !isUserLoading && userRole !== "tutor" && (
               <div className="alert alert-error shadow-sm py-2 text-sm flex items-center gap-2">
                 <FaUserGraduate />
                 <span>Only tutors can apply for tuition.</span>
               </div>
             )}
 
-            {user && !isRoleLoading && userRole === "tutor" && (
+            {user && !isUserLoading && userRole === "tutor" && (
               <button
                 onClick={() => setOpenModal(true)}
                 className="btn btn-primary btn-lg w-full md:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all hover:-translate-y-1"
@@ -344,7 +346,7 @@ const TuitionDetails = () => {
                     </label>
                     <input
                       type="text"
-                      defaultValue={user?.displayName || ""}
+                      defaultValue={userName}
                       readOnly
                       {...register("tutorName")}
                       className="input input-bordered w-full bg-base-200/50 cursor-not-allowed"

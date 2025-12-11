@@ -1,8 +1,9 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import authImg from '../assets/authImage.png'
+// import authImg from '../assets/authImage.png'
 import Navbar from '../pages/Shared/Navbar/Navbar';
 import Footer from '../pages/Shared/Footer/Footer';
+import registerImg from '../assets/rIMG.png'
 
 const AuthLayout = () => {
     return (
@@ -13,7 +14,7 @@ const AuthLayout = () => {
                     <Outlet></Outlet>
                 </div>
                 <div className='flex-1 hidden lg:block'> 
-                    <img src={authImg} alt="" />
+                    <img  src={registerImg} alt="" />
                 </div>
             </div>
              <Footer />

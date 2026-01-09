@@ -211,6 +211,23 @@ const DashboardLayout = () => {
                   </span>
                 </li>
 
+
+
+
+                 <li>
+                  <NavLink
+                    to="/dashboard/overview"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-gradient-to-r from-primary to-secondary text-white font-semibold"
+                        : "hover:bg-primary/10"
+                    }
+                  >
+                    <FiBookOpen className="text-lg" />
+                    Overview
+                  </NavLink>
+                </li>
+
                 <li>
                   <NavLink
                     to="/dashboard/my-tuitions"
@@ -249,7 +266,7 @@ const DashboardLayout = () => {
                     }
                   >
                     <FiEdit className="text-lg" />{" "}
-                    {/* ✅ Changed from FiFile */}
+                   
                     Manage Post
                   </NavLink>
                 </li>
@@ -287,11 +304,35 @@ const DashboardLayout = () => {
             {/* 🧑‍🏫 Tutor Section (Tutor + Admin) */}
             {isTutor && (
               <>
+
+
+
+
+
+
+
                 <li className="menu-title mt-3">
                   <span className="text-secondary font-bold tracking-wide">
                     Tutor
                   </span>
                 </li>
+
+
+                 <li>
+                  <NavLink
+                    to="/dashboard/tutor-overview"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-gradient-to-r from-secondary to-accent text-white font-semibold"
+                        : "hover:bg-secondary/10"
+                    }
+                  >
+                    <FiFile className="text-lg" />
+                    Overview
+                  </NavLink>
+                </li>
+
+
 
                 <li>
                   <NavLink
@@ -345,6 +386,28 @@ const DashboardLayout = () => {
                     Admin
                   </span>
                 </li>
+
+
+
+
+
+              <li>
+                  <NavLink
+                    to="/dashboard/admin-overview"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-gradient-to-r from-accent to-primary text-white font-semibold"
+                        : "hover:bg-accent/10"
+                    }
+                  >
+                    <FiUsers className="text-lg" />
+                    Overview
+                  </NavLink>
+                </li>
+
+
+
+
 
                 <li>
                   <NavLink

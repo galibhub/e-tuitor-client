@@ -31,6 +31,9 @@ import AdminRoute from "./AdminRoute";
 import ProfileSetting from "../layouts/ProfileSetting";
 import ManagePost from "../pages/Student/ManagePost";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import Overview from "../pages/Student/Overview";
+import AdminOverview from '../pages/Admin/AdminOverview';
+import TutorOverview from "../pages/Tuitor/TutorOverview";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +105,17 @@ export const router = createBrowserRouter([
       </PrivetRoute>
     ),
     children: [
+
+      {
+        path: "/dashboard/overview",
+        element: (
+          <StudentRoute>
+            <Overview></Overview>
+          </StudentRoute>
+        ),
+      },
+
+
       {
         path: "/dashboard/my-tuitions",
         element: (
@@ -150,6 +164,18 @@ export const router = createBrowserRouter([
           </StudentRoute>
         ),
       },
+  {
+        path: "/dashboard/tutor-overview",
+        element: (
+          <TutorRoute>
+            <TutorOverview></TutorOverview>
+          </TutorRoute>
+        ),
+      },
+
+
+
+
       {
         path: "/dashboard/my-applications",
         element: (
@@ -172,6 +198,14 @@ export const router = createBrowserRouter([
           <TutorRoute>
             <RevenueHistory></RevenueHistory>
           </TutorRoute>
+        ),
+      },
+      {
+        path: "/dashboard/admin-overview",
+        element: (
+          <AdminRoute>
+            <AdminOverview></AdminOverview>
+          </AdminRoute>
         ),
       },
       {

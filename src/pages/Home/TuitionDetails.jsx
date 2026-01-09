@@ -39,18 +39,17 @@ const TuitionDetails = () => {
   });
 
   // 2️⃣ Fetch logged-in user's data from backend
-const { data: userData, isLoading: isUserLoading } = useQuery({
-  queryKey: ["userData", user?.email],
-  enabled: !!user?.email,
-  queryFn: async () => {
-    const res = await axiosSecure.get(`/users/${user.email}`);
-    return res.data;
-  },
-});
+  const { data: userData, isLoading: isUserLoading } = useQuery({
+    queryKey: ["userData", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${user.email}`);
+      return res.data;
+    },
+  });
 
-const userRole = userData?.role;
-const userName = userData?.name || user?.displayName || "";
-
+  const userRole = userData?.role;
+  const userName = userData?.name || user?.displayName || "";
 
   // Helper function to format currency
   const formatCurrency = (amount) => {
@@ -131,6 +130,22 @@ const userName = userData?.name || user?.displayName || "";
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4">
       <div className="max-w-6xl mx-auto">
+        {/* TUITION IMAGE */}
+        <div className="mb-8 rounded-2xl overflow-hidden shadow-lg border border-base-200">
+          <img
+            src={
+              tuition.image ||
+              "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+            }
+            alt={tuition.title}
+            className="w-full h-[300px] object-cover"
+            onError={(e) => {
+              e.target.src =
+                "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f";
+            }}
+          />
+        </div>
+
         {/* --- 1. Top Header Card --- */}
         <div className="bg-base-100 rounded-2xl shadow-lg border border-base-200 p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
@@ -272,7 +287,10 @@ const userName = userData?.name || user?.displayName || "";
                 <div className="avatar placeholder">
                   <div className="bg-neutral text-neutral-content rounded-full w-16 shadow-inner ring ring-base-200 ring-offset-2">
                     {tuition.studentPhoto ? (
-                      <img src={tuition.studentPhoto} alt={tuition.studentName} />
+                      <img
+                        src={tuition.studentPhoto}
+                        alt={tuition.studentName}
+                      />
                     ) : (
                       <span className="text-xl font-bold uppercase">
                         {tuition.studentName?.charAt(0)}

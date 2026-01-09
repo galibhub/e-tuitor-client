@@ -5,12 +5,32 @@ import {
   FaCog,
   FaSignOutAlt,
   FaUser,
+  FaSun,
+  FaMoon,
 } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+
+  // --- THEME TOGGLE LOGIC START ---
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    document.querySelector("html").setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const handleToggle = (e) => {
+    if (e.target.checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+  // --- THEME TOGGLE LOGIC END ---
 
   const handleLogOut = () => {
     logOut()
@@ -22,28 +42,64 @@ const Navbar = () => {
       });
   };
 
+  // --- UPDATED NAVLINKS WITH ACTIVE STATE ---
   const navLinks = (
     <>
-      <li className="font-semibold">
-        <NavLink to="/">Home</NavLink>
+      <li>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-bold" : "font-semibold"
+          }
+        >
+          Home
+        </NavLink>
       </li>
-      <li className="font-semibold">
-        <NavLink to="/tuitions">Tuitions</NavLink>
+      <li>
+        <NavLink
+          to="/tuitions"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-bold" : "font-semibold"
+          }
+        >
+          Tuitions
+        </NavLink>
       </li>
-      <li className="font-semibold">
-        <NavLink to="/tutors">Tutors</NavLink>
+      <li>
+        <NavLink
+          to="/tutors"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-bold" : "font-semibold"
+          }
+        >
+          Tutors
+        </NavLink>
       </li>
-      <li className="font-semibold">
-        <NavLink to="/about">About</NavLink>
+      <li>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-bold" : "font-semibold"
+          }
+        >
+          About
+        </NavLink>
       </li>
-      <li className="font-semibold">
-        <NavLink to="/contact">Contact</NavLink>
+      <li>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-bold" : "font-semibold"
+          }
+        >
+          Contact
+        </NavLink>
       </li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100  shadow-md border-b border-base-300 px-4  sticky top-0 z-50">
+    <div className="navbar bg-base-100 shadow-md border-b border-base-300 px-4 sticky top-0 z-50">
       {/* LEFT SECTION */}
       <div className="navbar-start">
         {/* Mobile Menu */}
@@ -89,6 +145,20 @@ const Navbar = () => {
 
       {/* RIGHT SECTION */}
       <div className="navbar-end gap-2">
+        {/* --- THEME TOGGLE BUTTON START --- */}
+        <label className="swap swap-rotate btn btn-ghost btn-circle">
+          <input
+            type="checkbox"
+            onChange={handleToggle}
+            checked={theme === "dark"}
+          />
+          {/* sun icon */}
+          <FaSun className="swap-off fill-current w-5 h-5 text-yellow-500" />
+          {/* moon icon */}
+          <FaMoon className="swap-on fill-current w-5 h-5 text-blue-500" />
+        </label>
+        {/* --- THEME TOGGLE BUTTON END --- */}
+
         {user ? (
           <>
             {/* Dashboard Link (Optional) */}
@@ -179,10 +249,9 @@ const Navbar = () => {
             <Link to="/login" className="btn btn-primary">
               Login
             </Link>
-            <Link to="/register" className="btn btn-Secondary">
+            <Link to="/register" className="btn btn-secondary">
               Register
             </Link>
-           
           </>
         )}
       </div>

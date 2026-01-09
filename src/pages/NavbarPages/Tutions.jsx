@@ -261,6 +261,18 @@ const Tutions = () => {
               className="card bg-base-100 shadow-lg hover:shadow-2xl transition-shadow border border-base-300"
             >
               <div className="card-body">
+                <figure className="aspect-[16/9] w-full overflow-hidden">
+
+                  <img
+                    src={
+                      tuition.image ||
+                      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+                    }
+                    alt={tuition.title}
+                    className="w-full h-full object-cover"
+                  />
+                </figure>
+
                 <h3 className="card-title text-xl mb-2 line-clamp-2">
                   {tuition.title}
                 </h3>
@@ -283,8 +295,8 @@ const Tutions = () => {
                     {tuition.location}
                   </p>
                   <p className="flex items-center gap-2">
-                    <FaMoneyBillWave className="text-success" />
-                    ৳{tuition.salary}/month
+                    <FaMoneyBillWave className="text-success" />৳
+                    {tuition.salary}/month
                   </p>
                   <p className="flex items-center gap-2">
                     <FaCalendarAlt className="text-secondary" />
@@ -364,9 +376,7 @@ const Tutions = () => {
 
             <button
               className="btn btn-sm join-item"
-              onClick={() =>
-                setCurrentPage((p) => Math.min(totalPages, p + 1))
-              }
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
             >
               »

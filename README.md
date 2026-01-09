@@ -23,6 +23,7 @@ Think of it as a "job portal" but specifically for tuition!
 ## ✨ Key Features
 
 ### 👨‍🎓 For Students:
+
 - ✍️ **Post Tuition Jobs** - Create detailed tuition posts with subject, class, salary, location, and more
 - 📝 **Manage Posts** - Edit or delete your posted tuitions anytime
 - 👀 **View Applications** - See all tutors who applied for your tuitions
@@ -31,6 +32,7 @@ Think of it as a "job portal" but specifically for tuition!
 - 📊 **Dashboard** - Track all your tuitions, applications, and payments in one place
 
 ### 👨‍🏫 For Tutors:
+
 - 🔍 **Browse Jobs** - View all approved tuition opportunities
 - ✍️ **Apply for Tuitions** - Submit applications with qualifications and expected salary
 - 📈 **Track Applications** - Monitor application status (Pending/Approved/Rejected)
@@ -39,12 +41,14 @@ Think of it as a "job portal" but specifically for tuition!
 - 📚 **Profile Management** - Update your information and photo
 
 ### 👨‍💼 For Admin:
+
 - ✅ **Approve/Reject Posts** - Review tuition posts before they go live
 - 👥 **User Management** - View and manage all registered users
 - 📊 **Reports & Analytics** - View platform statistics and insights
 - 🛡️ **Content Moderation** - Ensure quality and safety of all content
 
 ### 🌟 General Features:
+
 - 🔐 **Secure Authentication** - Login with Email/Password or Google Sign-In
 - 🎨 **Beautiful UI** - Modern, clean design with smooth animations
 - 📱 **Fully Responsive** - Works perfectly on mobile, tablet, and desktop
@@ -57,40 +61,45 @@ Think of it as a "job portal" but specifically for tuition!
 ## 🛠️ Technologies Used
 
 ### Frontend Framework & Tools:
-| Technology | Purpose |
-|------------|---------|
-| **React 18** | JavaScript library for building user interfaces |
-| **Vite** | Next-generation build tool (faster than Create React App) |
-| **React Router v6** | Client-side routing and navigation |
-| **Tailwind CSS** | Utility-first CSS framework for styling |
-| **DaisyUI** | Component library built on Tailwind CSS |
+
+| Technology          | Purpose                                                   |
+| ------------------- | --------------------------------------------------------- |
+| **React 18**        | JavaScript library for building user interfaces           |
+| **Vite**            | Next-generation build tool (faster than Create React App) |
+| **React Router v6** | Client-side routing and navigation                        |
+| **Tailwind CSS**    | Utility-first CSS framework for styling                   |
+| **DaisyUI**         | Component library built on Tailwind CSS                   |
 
 ### Backend & Database:
-| Technology | Purpose |
-|------------|---------|
-| **MongoDB** | NoSQL database for storing all data |
-| **Express.js** | Node.js framework for building REST API |
+
+| Technology        | Purpose                                       |
+| ----------------- | --------------------------------------------- |
+| **MongoDB**       | NoSQL database for storing all data           |
+| **Express.js**    | Node.js framework for building REST API       |
 | **Firebase Auth** | User authentication (Email/Password + Google) |
-| **Stripe** | Secure payment processing |
+| **Stripe**        | Secure payment processing                     |
 
 ### State Management & Data Fetching:
-| Technology | Purpose |
-|------------|---------|
+
+| Technology         | Purpose                                  |
+| ------------------ | ---------------------------------------- |
 | **TanStack Query** | Server state management and data caching |
-| **Axios** | HTTP client for making API requests |
-| **React Context** | Global state management for auth |
+| **Axios**          | HTTP client for making API requests      |
+| **React Context**  | Global state management for auth         |
 
 ### Form Handling & UI:
-| Technology | Purpose |
-|------------|---------|
-| **React Hook Form** | Form validation and management |
-| **SweetAlert2** | Beautiful alert and confirmation dialogs |
-| **React Icons** | Icon library with 1000+ icons |
-| **Framer Motion** | Animation library for smooth transitions |
+
+| Technology          | Purpose                                  |
+| ------------------- | ---------------------------------------- |
+| **React Hook Form** | Form validation and management           |
+| **SweetAlert2**     | Beautiful alert and confirmation dialogs |
+| **React Icons**     | Icon library with 1000+ icons            |
+| **Framer Motion**   | Animation library for smooth transitions |
 
 ### Image & File Handling:
-| Technology | Purpose |
-|------------|---------|
+
+| Technology    | Purpose                       |
+| ------------- | ----------------------------- |
 | **ImgBB API** | Image hosting and CDN service |
 
 ---
@@ -200,13 +209,16 @@ etution-client/
 Before starting, make sure you have these installed on your computer:
 
 1. **Node.js** (version 16 or higher)
+
    - Download from: https://nodejs.org/
    - Check installation: `node --version`
 
 2. **npm** (comes with Node.js)
+
    - Check installation: `npm --version`
 
 3. **Git** (for cloning the repository)
+
    - Download from: https://git-scm.com/
    - Check installation: `git --version`
 
@@ -262,7 +274,7 @@ VITE_imgage_host_key=your_imgbb_api_key_here
 VITE_STRIPE_PUBLIC_KEY=pk_test_XXXXXXXXXXXXXXXXXXXXXXXX
 
 # Backend API URL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://etution-server.vercel.app
 ```
 
 **⚠️ Important:** All variable names MUST start with `VITE_` to work with Vite!
@@ -274,6 +286,7 @@ VITE_API_URL=http://localhost:3000
 You need to create accounts and get API keys:
 
 **Firebase Setup:**
+
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Create a new project
 3. Enable Authentication → Email/Password and Google
@@ -281,11 +294,13 @@ You need to create accounts and get API keys:
 5. Copy the config values to your `.env` file
 
 **ImgBB Setup:**
+
 1. Go to [ImgBB API](https://api.imgbb.com/)
 2. Create account and get API key
 3. Add to `.env` as `VITE_imgage_host_key`
 
 **Stripe Setup:**
+
 1. Go to [Stripe](https://stripe.com/)
 2. Create account
 3. Get **Publishable Key** from Developers → API Keys
@@ -328,11 +343,13 @@ npm run preview
 ### Deploy to Netlify (Recommended)
 
 #### Method 1: Drag & Drop
+
 1. Run `npm run build`
 2. Go to [Netlify](https://www.netlify.com/)
 3. Drag the `dist` folder to Netlify
 
 #### Method 2: GitHub Integration (Automatic Deploys)
+
 1. Push your code to GitHub
 2. Go to Netlify → New Site from Git
 3. Connect your GitHub repository
@@ -354,15 +371,18 @@ npm run preview
 ### As a Student:
 
 1. **Register/Login**
+
    - Click "Register" → Fill form → Select "Student" role
    - Or login with Google
 
 2. **Post a Tuition**
+
    - Go to Dashboard → Post New Tuition
    - Fill in: Subject, Class, Salary, Location, etc.
    - Submit and wait for admin approval
 
 3. **View Applications**
+
    - After admin approves, tutors can apply
    - Go to Dashboard → Applied Tutors
    - Review tutor applications
@@ -377,14 +397,17 @@ npm run preview
 ### As a Tutor:
 
 1. **Register/Login**
+
    - Click "Register" → Fill form → Select "Tutor" role
    - Or login with Google
 
 2. **Browse Tuitions**
+
    - Click "Tuitions" in navbar
    - View all available tuition jobs
 
 3. **Apply for Jobs**
+
    - Click "View Details" on a tuition
    - Click "Apply Now"
    - Fill application form with:
@@ -393,6 +416,7 @@ npm run preview
      - Expected salary
 
 4. **Track Applications**
+
    - Go to Dashboard → My Applications
    - See status: Pending/Approved/Rejected
    - Edit applications before approval
@@ -408,10 +432,12 @@ npm run preview
 1. **Login** with admin credentials
 
 2. **Approve Tuitions**
+
    - Dashboard → Tuition Management
    - Review posts → Approve or Reject
 
 3. **Manage Users**
+
    - Dashboard → User Management
    - View all registered users
 
@@ -425,13 +451,13 @@ npm run preview
 
 You can create these accounts for testing:
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@etution.com | Admin@123 |
-| Student | student@test.com | Student@123 |
-| Tutor | tutor@test.com | Tutor@123 |
+| Role    | Email             | Password    |
+| ------- | ----------------- | ----------- |
+| Admin   | admin@etution.com | Admin@123   |
+| Student | student@test.com  | Student@123 |
+| Tutor   | tutor@test.com    | Tutor@123   |
 
-*Note: Create these through registration with respective roles*
+_Note: Create these through registration with respective roles_
 
 ---
 
@@ -442,7 +468,7 @@ You can create these accounts for testing:
 ✅ **Secure Passwords** - Firebase handles password encryption  
 ✅ **Environment Variables** - Sensitive data never exposed in code  
 ✅ **HTTPS** - Production site uses secure connections  
-✅ **Payment Security** - Stripe handles all payment processing  
+✅ **Payment Security** - Stripe handles all payment processing
 
 ---
 
@@ -451,6 +477,7 @@ You can create these accounts for testing:
 ### Issue 1: "npm install" fails
 
 **Solution:**
+
 ```bash
 # Delete node_modules and package-lock.json
 rm -rf node_modules package-lock.json
@@ -467,11 +494,13 @@ npm install
 ### Issue 2: Environment variables not working
 
 **Possible causes:**
+
 - Variable names don't start with `VITE_`
 - `.env` file is in wrong location (must be in root)
 - Server not restarted after adding variables
 
 **Solution:**
+
 1. Check variable names: `VITE_apiKey` ✅ not `apiKey` ❌
 2. Restart dev server: `Ctrl+C` then `npm run dev`
 
@@ -480,6 +509,7 @@ npm install
 ### Issue 3: Firebase authentication error
 
 **Solution:**
+
 - Check Firebase Console → Authentication is enabled
 - Verify all Firebase config values in `.env`
 - Enable Email/Password and Google providers
@@ -490,6 +520,7 @@ npm install
 
 **Solution:**  
 Make sure `public/_redirects` file exists with:
+
 ```
 /* /index.html 200
 ```
@@ -499,6 +530,7 @@ Make sure `public/_redirects` file exists with:
 ### Issue 5: Images not uploading
 
 **Solution:**
+
 - Verify ImgBB API key is correct
 - Check internet connection
 - Make sure image is under 32MB
@@ -508,6 +540,7 @@ Make sure `public/_redirects` file exists with:
 ### Issue 6: Payment not working
 
 **Solution:**
+
 - Use Stripe test card: `4242 4242 4242 4242`
 - Any future date for expiry
 - Any 3 digits for CVC
@@ -547,6 +580,7 @@ This project is licensed under the MIT License.
 ## 👨‍💻 Developer
 
 **Galib**
+
 - GitHub: [@galibhub](https://github.com/galibhub)
 - Project: [e-tuitor-client](https://github.com/galibhub/e-tuitor-client)
 
@@ -623,6 +657,6 @@ If you're stuck or have questions:
 
 ---
 
-*Last Updated: December 10, 2025*
+_Last Updated: December 10, 2025_
 
-*If you found this project helpful, please give it a ⭐ on [GitHub](https://github.com/galibhub/e-tuitor-client)!*
+_If you found this project helpful, please give it a ⭐ on [GitHub](https://github.com/galibhub/e-tuitor-client)!_

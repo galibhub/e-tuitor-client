@@ -7,6 +7,10 @@ const ReportAnalysis = () => {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // --- PAGINATION STATE (NEW) ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Showing 5 rows per page
+
   // Load report data
   const fetchReport = async () => {
     try {
@@ -27,6 +31,19 @@ const ReportAnalysis = () => {
     fetchReport();
   }, []);
 
+  // --- PAGINATION CALCULATION (NEW) ---
+  // Safely get the array (or empty array if report is null)
+  const allPayments = report?.payments || [];
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  
+  // Slice the data for the current page
+  const currentPayments = allPayments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(allPayments.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   // Loading UI
   if (loading) {
     return (
@@ -43,7 +60,7 @@ const ReportAnalysis = () => {
         Reports & Analytics
       </h1>
 
-      {/* Cards Grid */}
+      {/* Cards Grid (Summary uses TOTAL data, unaffected by pagination) */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         {/* Total Earnings */}
         <div className="p-6 shadow-xl rounded-xl bg-base-100 border border-base-300 hover:scale-[1.02] transition">
@@ -85,8 +102,9 @@ const ReportAnalysis = () => {
             </tr>
           </thead>
 
+          {/* Map over currentPayments instead of report.payments */}
           <tbody>
-            {report?.payments?.map((pay) => (
+            {currentPayments.map((pay) => (
               <tr key={pay._id} className="hover">
                 <td className="font-mono text-xs">{pay.transactionId}</td>
                 <td>{pay.studentEmail}</td>
@@ -97,6 +115,40 @@ const ReportAnalysis = () => {
             ))}
           </tbody>
         </table>
+
+        {/* --- PAGINATION CONTROLS (NEW) --- */}
+        {allPayments.length > itemsPerPage && (
+          <div className="p-4 flex justify-center border-t border-base-200">
+            <div className="join">
+              <button
+                className="join-item btn btn-sm"
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                «
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  onClick={() => paginate(i + 1)}
+                  className={`join-item btn btn-sm ${
+                    currentPage === i + 1 ? "btn-active btn-primary" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="join-item btn btn-sm"
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                »
+              </button>
+            </div>
+          </div>
+        )}
+        {/* --- END CONTROLS --- */}
       </div>
     </div>
   );

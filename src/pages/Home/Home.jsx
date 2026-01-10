@@ -16,9 +16,10 @@ import WhyChoose from "./WhyChoose";
 import Hero from "./Hero";
 import Testimonials from "./Testimonials";
 import Statistics from "./Statistics";
-import Faq from "./FAQ";
+
 import Newsletter from "./Newsletter";
 import PlatformWorks from './PlatformWorks';
+import Faq from './Faq';
 
 // --- COMPONENT: Skeleton Loader ---
 const CardSkeleton = () => (

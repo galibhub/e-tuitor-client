@@ -12,18 +12,20 @@ const ManagePost = () => {
   const [tuitions, setTuitions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Edit modal er data
+  // Edit modal data
   const [editingTuition, setEditingTuition] = useState(null);
+
+  // --- PAGINATION STATE (NEW) ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // You can change this to 10 if you want
 
   // ---------- Load all tuitions posted by this student ----------
   const fetchMyTuitions = async () => {
     try {
       setLoading(true);
-
       const res = await axiosSecure.get(
         `/tutions?studentEmail=${encodeURIComponent(user?.email)}`
       );
-
       setTuitions(res.data || []);
     } catch (error) {
       console.error("Failed to load tuitions", error);
@@ -122,6 +124,16 @@ const ManagePost = () => {
     }
   };
 
+  // --- PAGINATION CALCULATION (NEW) ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // This slices the big array into a smaller array for the current page
+  const currentItems = tuitions.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(tuitions.length / itemsPerPage);
+
+  // Change page handler
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   // ---------- Loading UI ----------
   if (loading) {
     return (
@@ -176,11 +188,14 @@ const ManagePost = () => {
                 </tr>
               </thead>
               
-              {/* Table Body */}
+              {/* Table Body - CHANGED: Mapping 'currentItems' instead of 'tuitions' */}
               <tbody className="divide-y divide-base-200">
-                {tuitions.map((t, index) => (
+                {currentItems.map((t, index) => (
                   <tr key={t._id} className="hover:bg-base-200/30 transition-colors duration-200">
-                    <th className="pl-6 text-base-content/40 font-medium">{index + 1}</th>
+                    {/* Updated Index calculation so it continues (6, 7, 8) on page 2 */}
+                    <th className="pl-6 text-base-content/40 font-medium">
+                        {indexOfFirstItem + index + 1}
+                    </th>
 
                     <td className="py-4">
                       <div className="flex flex-col">
@@ -223,7 +238,7 @@ const ManagePost = () => {
                       <div className="flex items-center justify-end gap-3">
                         <button
                           onClick={() => openEditModal(t)}
-                          className="btn btn-sm btn-secondary text-white font-semibold hover:bg-black  "
+                          className="btn btn-sm btn-secondary text-white font-semibold hover:bg-black"
                         >
                           Update
                         </button>
@@ -240,15 +255,47 @@ const ManagePost = () => {
               </tbody>
             </table>
           </div>
+
+          {/* --- PAGINATION CONTROLS (NEW) --- */}
+          {tuitions.length > itemsPerPage && (
+            <div className="p-4 border-t border-base-200 flex justify-center">
+              <div className="join">
+                <button 
+                    className="join-item btn btn-sm" 
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    «
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i + 1}
+                        onClick={() => paginate(i + 1)}
+                        className={`join-item btn btn-sm ${currentPage === i + 1 ? 'btn-active btn-primary' : ''}`}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+                <button 
+                    className="join-item btn btn-sm" 
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    »
+                </button>
+              </div>
+            </div>
+          )}
+          {/* --- END PAGINATION CONTROLS --- */}
+
         </div>
       )}
 
-      {/* ---------- Edit Modal ---------- */}
+      {/* ---------- Edit Modal (Unchanged) ---------- */}
       {editingTuition && (
         <dialog className="modal modal-open modal-bottom sm:modal-middle bg-black/50 backdrop-blur-sm">
           <div className="modal-box w-11/12 max-w-3xl p-0 overflow-hidden rounded-3xl shadow-2xl">
             
-            {/* Modal Header */}
             <div className="bg-base-100 px-8 py-6 border-b border-base-200 flex justify-between items-center sticky top-0 z-10">
               <div>
                 <h3 className="font-bold text-2xl text-base-content">Edit Tuition</h3>
@@ -262,11 +309,9 @@ const ManagePost = () => {
               </button>
             </div>
 
-            {/* Modal Form */}
             <form onSubmit={handleUpdate} className="p-8 bg-base-100 max-h-[70vh] overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                {/* Block 1 */}
                 <div className="space-y-4">
                    <div className="form-control">
                       <label className="label text-xs font-bold text-base-content/60 uppercase">Title</label>
@@ -293,7 +338,6 @@ const ManagePost = () => {
                    </div>
                 </div>
 
-                {/* Block 2 */}
                 <div className="space-y-4">
                    <div className="grid grid-cols-2 gap-4">
                       <div className="form-control">
@@ -318,7 +362,6 @@ const ManagePost = () => {
                 </div>
               </div>
 
-              {/* Full Width Block */}
               <div className="mt-4 space-y-4">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control">
@@ -341,7 +384,6 @@ const ManagePost = () => {
                  </div>
               </div>
 
-              {/* Footer Actions */}
               <div className="modal-action pt-6 mt-6 border-t border-base-200">
                 <button type="button" className="btn btn-ghost hover:bg-base-200" onClick={closeEditModal}>
                   Cancel
@@ -353,7 +395,6 @@ const ManagePost = () => {
             </form>
           </div>
           
-          {/* Backdrop Click to Close */}
           <form method="dialog" className="modal-backdrop">
             <button onClick={closeEditModal}>close</button>
           </form>

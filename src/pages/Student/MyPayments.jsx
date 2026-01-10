@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // Added useState
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -7,14 +7,17 @@ const MyPayments = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
- 
+  // --- PAGINATION STATE (NEW) ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // You can change this to 10
+
   const {
     data: payments = [],
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["myPayments", user?.email],
-    enabled: !!user?.email, 
+    enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/payments/student?email=${user.email}`
@@ -23,11 +26,20 @@ const MyPayments = () => {
     },
   });
 
-  
+  // Calculate Total (Uses all data, not just current page)
   const totalPaid = payments.reduce(
     (sum, p) => sum + Number(p.amount || 0),
     0
   );
+
+  // --- PAGINATION CALCULATION (NEW) ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // Slice the data to show only current page items
+  const currentPayments = payments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(payments.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (isLoading) {
     return (
@@ -92,10 +104,12 @@ const MyPayments = () => {
                 <th>Date</th>
               </tr>
             </thead>
+            {/* Map over currentPayments instead of payments */}
             <tbody>
-              {payments.map((pay, index) => (
+              {currentPayments.map((pay, index) => (
                 <tr key={pay._id}>
-                  <td>{index + 1}</td>
+                  {/* Correct index calculation across pages */}
+                  <td>{indexOfFirstItem + index + 1}</td>
 
                   <td className="max-w-xs">
                     <span className="font-mono text-xs break-all">
@@ -116,9 +130,7 @@ const MyPayments = () => {
                   </td>
 
                   <td>
-                    <span className="text-sm">
-                      {pay.tutorEmail || "N/A"}
-                    </span>
+                    <span className="text-sm">{pay.tutorEmail || "N/A"}</span>
                   </td>
 
                   <td>
@@ -132,6 +144,40 @@ const MyPayments = () => {
               ))}
             </tbody>
           </table>
+
+          {/* --- PAGINATION CONTROLS (NEW) --- */}
+          {payments.length > itemsPerPage && (
+            <div className="flex justify-center mt-6">
+              <div className="join">
+                <button
+                  className="join-item btn btn-sm"
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  «
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => paginate(i + 1)}
+                    className={`join-item btn btn-sm ${
+                      currentPage === i + 1 ? "btn-active btn-primary" : ""
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  className="join-item btn btn-sm"
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  »
+                </button>
+              </div>
+            </div>
+          )}
+          {/* --- END CONTROLS --- */}
         </div>
       )}
     </div>

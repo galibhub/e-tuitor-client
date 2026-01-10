@@ -6,6 +6,10 @@ const UserManagement = () => {
   const axiosSecure = useAxiosSecure();
   const [users, setUsers] = useState([]);
 
+  // --- PAGINATION STATE (NEW) ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Display 5 users per page
+
   // Load all users
   const fetchUsers = async () => {
     const res = await axiosSecure.get("/admin/users");
@@ -15,6 +19,15 @@ const UserManagement = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // --- PAGINATION CALCULATION (NEW) ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // Slice the data for the current page
+  const currentUsers = users.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Change user role
   const handleRoleChange = (id, newRole) => {
@@ -91,8 +104,9 @@ const UserManagement = () => {
             </tr>
           </thead>
 
+          {/* Map over currentUsers instead of users */}
           <tbody>
-            {users.map((user) => (
+            {currentUsers.map((user) => (
               <tr key={user._id} className="hover">
                 {/* Photo */}
                 <td>
@@ -117,9 +131,7 @@ const UserManagement = () => {
                   <select
                     className="select select-bordered select-sm w-36"
                     value={user.role}
-                    onChange={(e) =>
-                      handleRoleChange(user._id, e.target.value)
-                    }
+                    onChange={(e) => handleRoleChange(user._id, e.target.value)}
                   >
                     <option value="student">Student</option>
                     <option value="tutor">Tutor</option>
@@ -131,9 +143,7 @@ const UserManagement = () => {
                 <td>
                   <span
                     className={`badge ${
-                      user.status === "active"
-                        ? "badge-success"
-                        : "badge-error"
+                      user.status === "active" ? "badge-success" : "badge-error"
                     }`}
                   >
                     {user.status}
@@ -153,6 +163,40 @@ const UserManagement = () => {
             ))}
           </tbody>
         </table>
+
+        {/* --- PAGINATION CONTROLS (NEW) --- */}
+        {users.length > itemsPerPage && (
+          <div className="p-4 flex justify-center border-t border-base-200">
+            <div className="join">
+              <button
+                className="join-item btn btn-sm"
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                «
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  onClick={() => paginate(i + 1)}
+                  className={`join-item btn btn-sm ${
+                    currentPage === i + 1 ? "btn-active btn-primary" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="join-item btn btn-sm"
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                »
+              </button>
+            </div>
+          </div>
+        )}
+        {/* --- END CONTROLS --- */}
       </div>
     </div>
   );

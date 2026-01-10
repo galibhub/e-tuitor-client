@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // Added useState
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -9,13 +9,17 @@ const AppliedTuitor = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
+  // --- PAGINATION STATE (NEW) ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Showing 5 items per page
+
   const {
     data: applications = [],
     isLoading,
     refetch,
   } = useQuery({
     queryKey: ["applications", user?.email],
-    enabled: !!user?.email, // only when email ready
+    enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/applications?studentEmail=${user.email}`
@@ -23,6 +27,15 @@ const AppliedTuitor = () => {
       return res.data;
     },
   });
+
+  // --- PAGINATION CALCULATION (NEW) ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // Slice the data to get only the items for the current page
+  const currentItems = applications.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(applications.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleUpdateStatus = async (applicationId, newStatus) => {
     try {
@@ -40,7 +53,7 @@ const AppliedTuitor = () => {
           timer: 1500,
           showConfirmButton: false,
         });
-        refetch(); // reload list
+        refetch();
       }
     } catch (error) {
       console.error(error);
@@ -93,10 +106,12 @@ const AppliedTuitor = () => {
                 <th className="text-center">Actions</th>
               </tr>
             </thead>
+            {/* Map over 'currentItems' instead of 'applications' */}
             <tbody>
-              {applications.map((app, index) => (
+              {currentItems.map((app, index) => (
                 <tr key={app._id}>
-                  <td>{index + 1}</td>
+                  {/* Calculate correct index based on page number */}
+                  <td>{indexOfFirstItem + index + 1}</td>
 
                   {/* Tutor info */}
                   <td>
@@ -161,7 +176,6 @@ const AppliedTuitor = () => {
                   {/* Actions */}
                   <td>
                     <div className="flex flex-col lg:flex-row gap-2 justify-center">
-                      {/* Accept -> Payment page */}
                       <Link
                         to={`/dashboard/payments/${app._id}`}
                         className={`btn btn-xs btn-success ${
@@ -171,7 +185,6 @@ const AppliedTuitor = () => {
                         Accept
                       </Link>
 
-                      {/* Reject -> still uses handleUpdateStatus */}
                       <button
                         onClick={() => handleUpdateStatus(app._id, "rejected")}
                         className="btn btn-xs btn-error"
@@ -185,6 +198,40 @@ const AppliedTuitor = () => {
               ))}
             </tbody>
           </table>
+
+          {/* --- PAGINATION CONTROLS (NEW) --- */}
+          {applications.length > itemsPerPage && (
+            <div className="p-4 flex justify-center mt-4">
+              <div className="join">
+                <button
+                  className="join-item btn btn-sm"
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  «
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => paginate(i + 1)}
+                    className={`join-item btn btn-sm ${
+                      currentPage === i + 1 ? "btn-active btn-primary" : ""
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  className="join-item btn btn-sm"
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  »
+                </button>
+              </div>
+            </div>
+          )}
+          {/* --- END PAGINATION CONTROLS --- */}
         </div>
       )}
     </div>
